@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
 namespace SpotlightWallpaper
@@ -15,6 +11,19 @@ namespace SpotlightWallpaper
 
         static void Main(string[] args)
         {
+            string ExecutablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string StartupExecutablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), Path.GetFileName(ExecutablePath));
+
+            if (!File.Exists(StartupExecutablePath))
+            {
+                File.Copy(ExecutablePath, StartupExecutablePath, true);
+            }
+
+            UpdateWallpapers();
+        }
+
+        static void UpdateWallpapers()
+        {
             string AssetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), SpotlightAssetPath);
             string OutputDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), SpotlightDirectoryName);
 
@@ -22,7 +31,6 @@ namespace SpotlightWallpaper
             {
                 Directory.CreateDirectory(OutputDirectory);
             }
-
 
             string[] FileNames = Directory.GetFiles(AssetPath);
 
